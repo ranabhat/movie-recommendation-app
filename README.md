@@ -21,6 +21,7 @@ Write a simple application that provides movie suggestions for a user based on t
 ## Running app
 
 1. Clone the repo
+2. Run `docker-compose build` 
 2. Run `docker-compose up` 
 3. After the app is up and running the API documentation can be accessed from `http://localhost/docs`
 
