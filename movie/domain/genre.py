@@ -1,0 +1,28 @@
+from enum import Enum, unique
+
+@unique
+class Genre(str, Enum):
+    Action = "Action"
+    Adventure = "Adventure"
+    Animation = "Animation"
+    Biography = "Biography"
+    Comedy = "Comedy"
+    Crime = "Crime"
+    Documentary = "Documentary"
+    Drama = "Drama"
+    Family = "Family"
+    Fantasy = "Fantasy"
+    FilmNoir = "Film-Noir"
+    History = "History"
+    Horror = "Horror"
+    Music = "Music"
+    Musical = "Musical"
+    Mystery = "Mystery"
+    Romance = "Romance"
+    SciFi = "Sci-Fi"
+    Short = "Short"
+    Sport = "Sport"
+    Superhero = "Superhero"
+    Thriller = "Thriller"
+    War = "War"
+    Western = "Western"
