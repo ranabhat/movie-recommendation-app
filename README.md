@@ -57,7 +57,11 @@ Objects in the dataset (movies) are described by some attributes and the recomme
 
 When implementing a microservice exposing an API, we need to avoid tight coupling between the different components that make up the application. 
 
-In order to avoid strong coupling between use case and storage component inversion of control technique is implemented. Inversion of control happens in two phases: In the first phase the use case needs to extract genre specific recommended movies,so the database wrapper needs to provide a single entry point that we might call recommended_list.In the second phase of inversion of control the caller (the use case) is modified to avoid hard coding the call to the specific implementation.The use case accepts an incoming object as a parameter of its constructor, and receives a concrete instance of the adapter at creation time. So we will assume the object we pass implements a the required methods. 
+In order to avoid strong coupling between use case and storage component inversion of control technique is implemented. Inversion of control happens in two phases: 
+
+1. In the first phase the use case needs to extract genre specific recommended movies,so the database wrapper needs to provide a single entry point that we might call `recommended_list`.
+
+2. In the second phase of inversion of control the caller (the use case) is modified to avoid hard coding the call to the specific implementation.The use case accepts an incoming object as a parameter of its constructor, and receives a concrete instance of the adapter at creation time. So we will assume the object we pass implements the required methods. 
 
 ## Endpoints
 
@@ -77,10 +81,11 @@ For implementing external services like Netflix we could write a new use case wh
 
 I have implemented repository pattern that helps to decouple the data layer from the business layer by adding an abstraction layer which exposes an in-memory list interface of the data. Regardless of the database engine that we use, the business layer (use case) will always receive the same objects from the repository.From the application’s perspective, if the database is moved from a in-memory database to a SQL database or any other kind of database, the conversation across the API should not change. Additional adapters for the same port thus include an SQL adapter, a flat file adapter, and most importantly, an adapter to a “mock” database, one that sits in memory and doesn’t depend on the presence of the real database at all.
 
-### Microservice consideration
+## Microservice consideration
 
-1. Implement hexagonal architecture, software architectural pattern that encourages us to decouple the business layer from the implementation details of the database and the application interface.
+1. Develop micro-service based on well defined scope, or task or domain (applying single responsibility principle). For example, *Movie Recommendation micro-service* will only recommend movie. The service will have movie recommendation app (with business use case) and recommendation api that will expose the service. Another microservice (for instance, *User micro-service*) which needs to interact with *Movie Recommendation micro-service* will do with API calls.
 
-2. Develop micro-service based on well defined scope, or task or domain (applying single responsibility principle). For example, *Movie Recommendation micro-service* will only recommend movie. The service will have movie recommendation app (with business use case) and recommendation api that will expose the service. Another microservice (for instance, *User micro-service*) which needs to interact with *Movie Recommendation micro-service* will do with API calls.
+2. Implement hexagonal architecture, software architectural pattern that encourages us to decouple the business layer from the implementation details of the database and the application interface.
+
  
 
