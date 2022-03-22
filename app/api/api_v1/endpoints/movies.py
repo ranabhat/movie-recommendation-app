@@ -3,8 +3,8 @@ from typing import List, Any
 from app import schemas
 from movie.domain.genre import Genre
 from movie.repository.memrepo import MemRepo
-from movie.use_cases.movie_list import movie_list_use_case
-from movie.use_cases.movie_recommended_list import movie_recommended_use_case
+from movie.use_cases.movie_list import MovieRecommendationUsecase
+#from movie.use_cases.movie_recommended_list import movie_recommended_use_case
 from movie.serializers.movie import MovieJsonEncoder
 import json
 
@@ -46,7 +46,7 @@ movies = [
 @router.get("/", response_model=List[schemas.Movie])
 async def get_all_movies():
     repo = MemRepo(movies)
-    result = movie_list_use_case(repo)
+    result = MovieRecommendationUsecase(repo).movie_list_use_case()
     encode_to_json_string = json.dumps(result, cls=MovieJsonEncoder)
     return json.loads(encode_to_json_string)
 
@@ -60,7 +60,7 @@ async def get_recommended_movies(
     """
 
     repo = MemRepo(movies, genre)
-    result = movie_recommended_use_case(repo)
+    result = MovieRecommendationUsecase(repo).movie_recommended_use_case()
     if not result:
         detail=f"Recommendation for movies not found for genre:{genre.value}"
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
