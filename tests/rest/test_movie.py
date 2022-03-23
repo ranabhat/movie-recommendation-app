@@ -12,7 +12,7 @@ movie_dict = {
 
 movies = [Movie.from_dict(movie_dict)]
 
-@mock.patch("app.api.api_v1.endpoints.movies.movie_list_use_case")
+@mock.patch("app.api.api_v1.endpoints.movies.MovieRecommendationUsecase.movie_list_use_case")
 def test_get_all_movies(mock_use_case,client):
         mock_use_case.return_value = movies
         http_response = client.get("/api/v1/movies")
@@ -20,16 +20,15 @@ def test_get_all_movies(mock_use_case,client):
         mock_use_case.assert_called()
         assert http_response.status_code == 200
 
-@mock.patch("app.api.api_v1.endpoints.movies.movie_recommended_use_case")
+@mock.patch("app.api.api_v1.endpoints.movies.MovieRecommendationUsecase.movie_recommended_use_case")
 def test_get_recommended_movies_when_exist(mock_use_case, client):
         mock_use_case.return_value = movies
         http_response = client.get(f"/api/v1/movies/Sci-Fi")
-        print(http_response.json())
         assert http_response.json() == [movie_dict]
         mock_use_case.assert_called()
         assert http_response.status_code == 200
 
-@mock.patch("app.api.api_v1.endpoints.movies.movie_recommended_use_case")
+@mock.patch("app.api.api_v1.endpoints.movies.MovieRecommendationUsecase.movie_recommended_use_case")
 def test_get_recommended_movies_when_not_exist(mock_use_case, client):
         mock_use_case.return_value = []
         http_response = client.get(f"/api/v1/movies/Film-Noir")

@@ -1,6 +1,7 @@
+from movie.repository.abstractrepo import MovieRecommendationRepo
 from movie.domain.movie import Movie
 
-class MemRepo:
+class MemRepo(MovieRecommendationRepo):
     def __init__(self, data, genre=None):
         self.data = data
         self.genre = genre

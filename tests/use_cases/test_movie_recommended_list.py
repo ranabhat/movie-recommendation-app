@@ -3,7 +3,8 @@ import uuid
 from unittest import mock
 
 from movie.domain.movie import Movie
-from movie.use_cases.movie_recommended_list import movie_recommended_use_case
+from movie.use_cases.movie_list import MovieRecommendationUsecase
+
 
 @pytest.fixture
 def recommended_movies():
@@ -26,7 +27,7 @@ def test_movie_recommendation(recommended_movies):
      repo = mock.Mock()
      repo.recommended_list.return_value = recommended_movies
 
-     result = movie_recommended_use_case(repo)
+     result = MovieRecommendationUsecase(repo).movie_recommended_use_case()
 
      repo.recommended_list.assert_called_with()
      assert result == recommended_movies

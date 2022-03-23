@@ -3,7 +3,7 @@ import uuid
 from unittest import mock
 
 from movie.domain.movie import Movie
-from movie.use_cases.movie_list import movie_list_use_case
+from movie.use_cases.movie_list import MovieRecommendationUsecase
 
 
 @pytest.fixture
@@ -50,7 +50,7 @@ def test_movie_list_without_parameters(domain_movies):
     repo = mock.Mock()
     repo.list.return_value = domain_movies
 
-    result = movie_list_use_case(repo)
+    result = MovieRecommendationUsecase(repo).movie_list_use_case()
 
     repo.list.assert_called_with()
     assert result == domain_movies
