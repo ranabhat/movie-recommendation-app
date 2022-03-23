@@ -10,6 +10,5 @@ class MovieRecommendationUsecase:
     def movie_recommended_use_case(self):
         return self.repo_object.recommended_list()
 
-# def movie_list_use_case(repo): 
-#     return repo.list()
+
 
