@@ -4,7 +4,6 @@ from app import schemas
 from movie.domain.genre import Genre
 from movie.repository.memrepo import MemRepo
 from movie.use_cases.movie_list import MovieRecommendationUsecase
-#from movie.use_cases.movie_recommended_list import movie_recommended_use_case
 from movie.serializers.movie import MovieJsonEncoder
 import json
 
