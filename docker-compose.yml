@@ -2,28 +2,47 @@ version: '3'
 
 services: 
 
-    app:
-        build: .
-        container_name: movie-recommendation-app
+    backend:
+        build: ./
+        restart: always
+        #container_name: movie-recommendation-app
         # volumes:
         #   - ./:/usr/src/app
+        labels:
+            # Enable Traefik for this specific "backend" service
+            - traefik.enable=true
+            # Define the port inside of the Docker service to use
+            - traefik.http.services.app.loadbalancer.server.port=80
+            # Make Traefik use this domain in HTTP
+            - traefik.http.routers.app-http.entrypoints=http
+            - traefik.http.routers.app-http.rule=Host(`api.localhost.com`)
+            # Use the traefik-public network (declared below)
+            - traefik.docker.network=traefik-public
+            # Make Traefik use this domain in HTTPS
+            - traefik.http.routers.app-https.entrypoints=https
+            - traefik.http.routers.app-https.rule=Host(`api.localhost.com`)
+            - traefik.http.routers.app-https.tls=true
+            # Use the "le" (Let's Encrypt) resolver
+            - traefik.http.routers.app-https.tls.certresolver=le
+            # https-redirect middleware to redirect HTTP to HTTPS
+            - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+            - traefik.http.middlewares.https-redirect.redirectscheme.permanent=true
+            # Middleware to redirect HTTP to HTTPS
+            - traefik.http.routers.app-http.middlewares=https-redirect
+            - traefik.http.routers.app-https.middlewares=admin-auth
         networks:
-            - proxy-network
-        ports:
-            - 8000:8000
+            # Use the public network created to be shared between Traefik and 
+            # any other service that needs to be publicly available with HTTPS
+            - traefik-public
+networks:
+    traefik-public:
+        external: true
 
-    reverse-proxy:
-        image: nginx:stable-alpine
-        volumes: 
-            - ./nginx.conf:/etc/nginx/nginx.conf:ro
-        ports:
-            - 80:80
-        networks:
-            - proxy-network
-        container_name: proxy
-        depends_on: 
-            - app
 
-networks: 
-    proxy-network:
-        name: proxy-network
+### api.localhost.com ---> server dns name (host)
+### To add api.localhost.com, got to /etc/host 
+### replace line  127.0.0.1       localhost by
+### 127.0.0.1       localhost 
+### 127.0.0.1       api.localhost.com
+### 127.0.0.1       traefik.api.localhost.com
+

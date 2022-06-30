@@ -69,6 +69,22 @@ In order to avoid strong coupling between use case and storage component inversi
 1. GET `http://localhost/api/v1/movies` - will return the list of movies
 2. GET `http://localhost/api/v1/movies/{genre}` - will recommend movies based on user preference, endpoint could be `http://localhost/api/v1/movies/Thriller`
 
+
+## Traefik Implementation
+
+Since we are testing and deploying our code locally in docker container, we need to set up host name for traefik. The host in production will be the domain name of the remote server. The `api.localhost.com` will be replaced by the domain name.
+
+1. Go to `/etc/hosts` and add 
+
+```
+127.0.0.1       api.localhost.com
+127.0.0.1       traefik.api.localhost.com
+```
+
+2. In prod Export basic auth {USERNAME} and ${HASHED_PASSWORD} to the remote server. Here I have used explicitly used `USERNAME as admin` and `PASSWORD admin`. 
+3. Create a hash password using `openssl passwd -apr1 <password>`
+
+
 ## Testability 
 
 The advantage with this architecture is testability. When we clearly separate components we clearly establish the data each of them has to receive and produce, so we can ideally disconnect a single component and test it in isolation.

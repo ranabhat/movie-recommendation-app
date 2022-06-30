@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: dev
+  name: movieapp-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movieapp
+  template:
+    metadata:
+      labels:
+        app: movieapp
+    spec:
+      containers:
+        - name: movieapp
+          image: mycluster-registry.localhost:50000/movies:latest

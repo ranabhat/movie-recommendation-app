@@ -27,5 +27,5 @@ COPY tests/ /usr/src/app/tests
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /usr/src/app
 USER appuser
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "-k", "uvicorn.workers.UvicornWorker", "app.main:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "-k", "uvicorn.workers.UvicornWorker", "app.main:app"]
 
